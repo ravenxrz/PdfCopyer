@@ -1,12 +1,10 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
 #include "clipboardprocessor.h"
-
 
 #include <QAction>
 #include <QDialog>
 #include <QMenu>
-
+#include <QCoreApplication>
 
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
@@ -28,7 +26,9 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::setVisible(bool visible)
-{}
+{
+    (void)visible;
+}
 
 void MainWindow::clipboardContentProcess()
 {
