@@ -4,11 +4,6 @@
 #include <QDebug>
 
 
-ClipboardProcessor::ClipboardProcessor()
-{
-
-}
-
 void ClipboardProcessor::processClipboardText()
 {
     static QClipboard *board = QGuiApplication::clipboard();

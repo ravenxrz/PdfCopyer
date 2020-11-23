@@ -5,7 +5,7 @@
 class ClipboardProcessor
 {
 public:
-    ClipboardProcessor();
+    ClipboardProcessor()=delete;
     static void processClipboardText();
 };
 
