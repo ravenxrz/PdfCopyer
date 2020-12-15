@@ -1,32 +1,6 @@
 #include "clipboardprocessor.h"
 
-// 默认为普通模式
-ProcessMode ClipboardProcessor::currentMode = ProcessMode::NORMAL;
 
-
-void ClipboardProcessor::processClipboardText()
-{
-    switch(currentMode){
-    case ProcessMode::NORMAL:
-        normalModeProcess();
-        break;
-    case ProcessMode::CODE:
-        codeModeProcess();
-        break;
-    default:
-        qDebug() << "无效模式" << endl;
-    }
-}
-
-void ClipboardProcessor::openCodeMode()
-{
-    currentMode = ProcessMode::CODE;
-}
-
-void ClipboardProcessor::openNormalMode()
-{
-    currentMode = ProcessMode::NORMAL;
-}
 
 bool ClipboardProcessor::containChineseText(const QString &text)
 {
@@ -81,27 +55,23 @@ void ClipboardProcessor::codeModeProcess()
     QString content = "";
 
     // 处理
-    bool haveSetSpaceOffset = false;
-    int spaceOffset = 0;
+    int minNonSpaceOffset = 0x7fffffff;
     tempStr = systemBoard()->text();
     QStringList lines = tempStr.split("\n");
     for(auto& line : lines){
         int firstSpaceOffset = line.indexOf(" ");
         QString tempLine = line.mid(firstSpaceOffset);
-
-        if(!haveSetSpaceOffset){      // 由首行确定确定空格偏移量
-            spaceOffset = firstNonSpaceOffset(tempLine);
-            if(spaceOffset == -1) {
-                spaceOffset = 0;
-            }else{
-                haveSetSpaceOffset = true;
-            }
+        int nonSpaceOffset = firstNonSpaceOffset(tempLine);
+        if(nonSpaceOffset == -1) {
+             content.append(tempLine.mid(0)+"\n");
+             continue;
+        }else{
+            minNonSpaceOffset = std::min(nonSpaceOffset,minNonSpaceOffset);
+            content.append(tempLine.mid(minNonSpaceOffset)+"\n");
         }
-        content.append(line.mid(firstSpaceOffset + spaceOffset)+"\n");
     }
 
     qDebug() << content;
-
     // 重新设置回剪切板
     systemBoard()->setText(content);
 }

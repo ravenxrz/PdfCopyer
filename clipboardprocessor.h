@@ -5,7 +5,6 @@
 #include <QClipboard>
 #include <QGuiApplication>
 #include <QDebug>
-#include "processmode.h"
 
 
 class ClipboardProcessor
@@ -14,16 +13,18 @@ public:
     ClipboardProcessor()=delete;
 
     /**
-     * @brief processClipboardText 处理当前剪切板中的文本，
-     *  对于中文，直接去掉换行符。
-     *  对于非中文，去掉换行符后，添加空格
+     * @brief normalModeProcess
+     * 普通文本模式处理
+     * 去掉换行符，中英文分别处理
      */
-    static void processClipboardText();
+    static void normalModeProcess();
 
-
-    static void openCodeMode();
-
-    static void openNormalMode();
+    /**
+     * @brief codeModeProcess
+     * 代码模式处理
+     * 去掉
+     */
+    static void codeModeProcess();
 
 private:
 
@@ -49,26 +50,7 @@ private:
     static bool containChineseText(const QString& text);
 
 
-    /**
-     * @brief normalModeProcess
-     * 普通文本模式处理
-     * 去掉换行符，中英文分别处理
-     */
-    static void normalModeProcess();
-
-    /**
-     * @brief codeModeProcess
-     * 代码模式处理
-     * 去掉
-     */
-    static void codeModeProcess();
-
-
-
-
-
 private:
-    static ProcessMode currentMode;
 
 };
 

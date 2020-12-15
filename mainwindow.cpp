@@ -14,7 +14,8 @@ MainWindow::MainWindow(QWidget *parent)
     crateHotKey();
 
     // 绑定动作
-    connect(hotKey, &QHotkey::activated, this,&MainWindow::clipboardContentProcess);
+    connect(normalModeHotKey, &QHotkey::activated, this,&MainWindow::normalModeProcess);
+    connect(codeModeHotKey, &QHotkey::activated, this,&MainWindow::codeModeProcess);
 
     trayIcon->show();
 }
@@ -29,28 +30,20 @@ void MainWindow::setVisible(bool visible)
     (void)visible;
 }
 
-void MainWindow::clipboardContentProcess()
+void MainWindow::normalModeProcess()
 {
-    ClipboardProcessor::processClipboardText();
+    ClipboardProcessor::normalModeProcess();
 }
 
-void MainWindow::codeModeSwtich(bool isOpen)
+void MainWindow::codeModeProcess()
 {
-    if(isOpen){
-        ClipboardProcessor::openCodeMode();
-    }else{
-        ClipboardProcessor::openNormalMode();
-    }
+    ClipboardProcessor::codeModeProcess();
 }
+
+
 
 void MainWindow::createActions()
 {
-    // 代码模式
-    codeModeAction = new QAction("代码模式",this);
-    codeModeAction->setCheckable(true);
-    codeModeAction->setChecked(false);
-    connect(codeModeAction,&QAction::triggered,this,&MainWindow::codeModeSwtich);
-
     // 退出
     quitAction = new QAction(tr("退出"),this);
     connect(quitAction,&QAction::triggered,qApp,&QCoreApplication::quit);
@@ -59,7 +52,6 @@ void MainWindow::createActions()
 void MainWindow::createTrayIcon()
 {
     QMenu *trayIconMenu = new QMenu(this);
-    trayIconMenu->addAction(codeModeAction);
     trayIconMenu->addAction(quitAction);
 
     trayIcon = new QSystemTrayIcon(this);
@@ -69,6 +61,10 @@ void MainWindow::createTrayIcon()
 
 void MainWindow::crateHotKey()
 {
-    hotKey = new QHotkey(QKeySequence("alt+1"), true, this);//The hotkey will be automatically registered
+    // 文本处理快捷键
+    normalModeHotKey = new QHotkey(QKeySequence("alt+1"), true, this);//The hotkey will be automatically registered
+    // 代码处理快捷键
+    codeModeHotKey = new QHotkey(QKeySequence("alt+2"),true,this);
+
 }
 

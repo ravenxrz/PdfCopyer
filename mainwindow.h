@@ -18,9 +18,9 @@ public:
     void setVisible(bool visible) override;
 
 private slots:
-    void clipboardContentProcess();
+    void normalModeProcess();
 
-    void codeModeSwtich(bool isOpen);
+    void codeModeProcess();
 
 private:
     void createActions();
@@ -29,9 +29,9 @@ private:
 
 private:
     QAction *quitAction;
-    QAction *codeModeAction;
 
-    QHotkey *hotKey;
+    QHotkey *normalModeHotKey;      // 文本处理快捷键
+    QHotkey *codeModeHotKey;        // 代码处理快捷键
 
     QSystemTrayIcon *trayIcon;
 
