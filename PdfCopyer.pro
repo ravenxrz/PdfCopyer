@@ -1,5 +1,6 @@
 HEADERS       = mainwindow.h \
 	clipboardprocessor.h \
+	processmode.h \
 	qhotkey.h \
 	qhotkey_p.h
 SOURCES       = main.cpp \

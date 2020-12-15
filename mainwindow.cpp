@@ -1,10 +1,9 @@
-#include "mainwindow.h"
-#include "clipboardprocessor.h"
-
 #include <QAction>
 #include <QDialog>
 #include <QMenu>
 #include <QCoreApplication>
+#include "mainwindow.h"
+#include "clipboardprocessor.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
@@ -35,9 +34,24 @@ void MainWindow::clipboardContentProcess()
     ClipboardProcessor::processClipboardText();
 }
 
+void MainWindow::codeModeSwtich(bool isOpen)
+{
+    if(isOpen){
+        ClipboardProcessor::openCodeMode();
+    }else{
+        ClipboardProcessor::openNormalMode();
+    }
+}
 
 void MainWindow::createActions()
 {
+    // 代码模式
+    codeModeAction = new QAction("代码模式",this);
+    codeModeAction->setCheckable(true);
+    codeModeAction->setChecked(false);
+    connect(codeModeAction,&QAction::triggered,this,&MainWindow::codeModeSwtich);
+
+    // 退出
     quitAction = new QAction(tr("退出"),this);
     connect(quitAction,&QAction::triggered,qApp,&QCoreApplication::quit);
 }
@@ -45,6 +59,7 @@ void MainWindow::createActions()
 void MainWindow::createTrayIcon()
 {
     QMenu *trayIconMenu = new QMenu(this);
+    trayIconMenu->addAction(codeModeAction);
     trayIconMenu->addAction(quitAction);
 
     trayIcon = new QSystemTrayIcon(this);

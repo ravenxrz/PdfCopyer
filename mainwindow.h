@@ -20,6 +20,8 @@ public:
 private slots:
     void clipboardContentProcess();
 
+    void codeModeSwtich(bool isOpen);
+
 private:
     void createActions();
     void createTrayIcon();
@@ -27,6 +29,7 @@ private:
 
 private:
     QAction *quitAction;
+    QAction *codeModeAction;
 
     QHotkey *hotKey;
 
