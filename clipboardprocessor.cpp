@@ -70,6 +70,8 @@ void ClipboardProcessor::codeModeProcess()
             content.append(tempLine.mid(minNonSpaceOffset)+"\n");
         }
     }
+    // remove last '\n'
+    content = content.mid(0,content.size()-1);
 
     qDebug() << content;
     // 重新设置回剪切板
